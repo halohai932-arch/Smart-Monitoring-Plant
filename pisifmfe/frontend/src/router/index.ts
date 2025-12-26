@@ -3,13 +3,25 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAuth } from "../stores/auth";
 import Landing from "../views/landing.vue";
 import Login from "../views/login.vue";
-import DashboardLayout from "../layouts/dashboardLayout.vue";
+import NewDashboardLayout from "../layouts/newDashboardLayout.vue";
 import UtilityConsumption from "../views/utility/utilityConsumption.vue";
-import Lvmdp1 from "../views/lvmdp/lvmdp1.vue";
-import Lvmdp2 from "../views/lvmdp/lvmdp2.vue";
-import Lvmdp3 from "../views/lvmdp/lvmdp3.vue";
-import Lvmdp4 from "../views/lvmdp/lvmdp4.vue";
-import SummaryPanelDashboard from "../views/summary/SummaryPanelDashboard.vue";
+
+// New Dashboard Imports
+const GlobalDashboard = () =>
+  import("../views/dashboards/global/GlobalDashboard.vue");
+const PlantDashboard = () =>
+  import("../views/dashboards/plant/PlantDashboard.vue");
+const ElectricalDashboard = () =>
+  import("../views/dashboards/electrical/ElectricalDashboard.vue");
+const UtilitiesDashboard = () =>
+  import("../views/dashboards/utilities/UtilitiesDashboard.vue");
+const ProductionDashboard = () =>
+  import("../views/dashboards/production/ProductionDashboard.vue");
+const LVMDPDetail = () => import("../views/details/lvmdp/LVMDPDetail.vue");
+const MachineDetail = () =>
+  import("../views/details/machine/MachineDetail.vue");
+const UtilityDetail = () =>
+  import("../views/details/utilities/UtilityDetail.vue");
 const LvmdpDailyReport = () =>
   import("../views/dailyReport/lvmdp/lvmdpDailyReport.vue");
 
@@ -78,51 +90,6 @@ const BagmakerTWS72DailyReport = () =>
 const BagmakerPackingPouchDailyReport = () =>
   import("../views/dailyReport/bagmaker/bagmakerPackingPouchDailyReport.vue");
 
-// --- Production pages
-const PC39 = () => import("../views/production/pc39.vue");
-const PC14 = () => import("../views/production/pc14.vue");
-const FCP = () => import("../views/production/fcp.vue");
-const TWS56 = () => import("../views/production/tws56.vue");
-const TWS72 = () => import("../views/production/tws72.vue");
-const COPACK = () => import("../views/production/copack.vue");
-const CassavaInhouse = () => import("../views/production/cassavaInhouse.vue");
-const Tortila = () => import("../views/production/tortila.vue");
-const PackingPouch = () => import("../views/production/packingPouch.vue");
-const VacuumFryer = () => import("../views/production/vacuumFryer.vue");
-
-// --- Packing pages
-// Weigher views
-const WeigherPC14 = () => import("../views/packing/weigher/weigherPC14.vue");
-const WeigherPC39 = () => import("../views/packing/weigher/weigherPC39.vue");
-const WeigherCassavaInhouse = () =>
-  import("../views/packing/weigher/weigherCassavaInhouse.vue");
-const WeigherCassavaCopack = () =>
-  import("../views/packing/weigher/weigherCassavaCopack.vue");
-const WeigherTortila = () =>
-  import("../views/packing/weigher/weigherTortila.vue");
-const WeigherFCP = () => import("../views/packing/weigher/weigherFCP.vue");
-const WeigherTWS56 = () => import("../views/packing/weigher/weigherTWS56.vue");
-const WeigherTWS72 = () => import("../views/packing/weigher/weigherTWS72.vue");
-const WeigherPackingPouch = () =>
-  import("../views/packing/weigher/weigherPackingPouch.vue");
-
-// BagMaker views
-const BagMakerPC14 = () => import("../views/packing/bagmaker/bagmakerPC14.vue");
-const BagMakerPC39 = () => import("../views/packing/bagmaker/bagmakerPC39.vue");
-const BagMakerCassavaInhouse = () =>
-  import("../views/packing/bagmaker/bagmakerCassavaInhouse.vue");
-const BagMakerCassavaCopack = () =>
-  import("../views/packing/bagmaker/bagmakerCassavaCopack.vue");
-const BagMakerTortila = () =>
-  import("../views/packing/bagmaker/bagmakerTortila.vue");
-const BagMakerFCP = () => import("../views/packing/bagmaker/bagmakerFCP.vue");
-const BagMakerTWS56 = () =>
-  import("../views/packing/bagmaker/bagmakerTWS56.vue");
-const BagMakerTWS72 = () =>
-  import("../views/packing/bagmaker/bagmakerTWS72.vue");
-const BagMakerPackingPouch = () =>
-  import("../views/packing/bagmaker/bagmakerPackingPouch.vue");
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -130,54 +97,62 @@ const router = createRouter({
     { path: "/login", name: "login", component: Login },
     {
       path: "/app",
-      component: DashboardLayout,
+      component: NewDashboardLayout,
       meta: { requiresAuth: true },
       children: [
-        // Summary Dashboard - Default route
+        // Global Dashboard - Default route after login
         {
           path: "",
-          redirect: "summary",
+          redirect: "global",
         },
         {
-          path: "summary",
-          name: "summary",
-          component: SummaryPanelDashboard,
+          path: "global",
+          name: "globalDashboard",
+          component: GlobalDashboard,
+        },
+        // Plant-level routes with dynamic plant ID
+        {
+          path: "plant/:plantId",
+          name: "plantDashboard",
+          component: PlantDashboard,
+        },
+        {
+          path: "plant/:plantId/electrical",
+          name: "electrical",
+          component: ElectricalDashboard,
+        },
+        {
+          path: "plant/:plantId/electrical/lvmdp/:lvmdpId",
+          name: "lvmdpDetail",
+          component: LVMDPDetail,
+        },
+        {
+          path: "plant/:plantId/production",
+          name: "production",
+          component: ProductionDashboard,
+        },
+        {
+          path: "plant/:plantId/machine/:machineId",
+          name: "machineDetail",
+          component: MachineDetail,
+        },
+        {
+          path: "plant/:plantId/utilities",
+          name: "utilities",
+          component: UtilitiesDashboard,
+        },
+        {
+          path: "plant/:plantId/utilities/:utilityType",
+          name: "utilityDetail",
+          component: UtilityDetail,
         },
 
-        // LVMDP routes
-        { path: "lvmdp1", name: "lvmdp1", component: Lvmdp1 },
-        { path: "lvmdp2", name: "lvmdp2", component: Lvmdp2 },
-        { path: "lvmdp3", name: "lvmdp3", component: Lvmdp3 },
-        { path: "lvmdp4", name: "lvmdp4", component: Lvmdp4 },
+        // LVMDP daily report route
         {
           path: "daily-report",
           name: "dailyReport",
           component: LvmdpDailyReport,
           meta: { requiresUser: true },
-        },
-
-        // Production routes
-        { path: "production/pc14", name: "pc14", component: PC14 },
-        { path: "production/pc39", name: "pc39", component: PC39 },
-        {
-          path: "production/cassava-inhouse",
-          name: "cassavaInhouse",
-          component: CassavaInhouse,
-        },
-        { path: "production/copack", name: "copack", component: COPACK },
-        { path: "production/tortila", name: "tortila", component: Tortila },
-        { path: "production/fcp", name: "fcp", component: FCP },
-        { path: "production/tws56", name: "tws56", component: TWS56 },
-        { path: "production/tws72", name: "tws72", component: TWS72 },
-        {
-          path: "production/packing-pouch",
-          name: "packingPouch",
-          component: PackingPouch,
-        },
-        {
-          path: "production/vacuum-fryer",
-          name: "vacuumFryer",
-          component: VacuumFryer,
         },
 
         // Utility Consumption routes (User only)
@@ -249,118 +224,6 @@ const router = createRouter({
           name: "utilityVacuumFryer",
           component: UtilityConsumption,
           props: { machineName: "Vacuum Fryer 1" },
-          meta: { requiresUser: true },
-        },
-
-        // Packing routes - Weigher (User only)
-        {
-          path: "packing/weigher-pc14",
-          name: "weigherPC14",
-          component: WeigherPC14,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-pc39",
-          name: "weigherPC39",
-          component: WeigherPC39,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-cassava-inhouse",
-          name: "weigherCassavaInhouse",
-          component: WeigherCassavaInhouse,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-cassava-copack",
-          name: "weigherCassavaCopack",
-          component: WeigherCassavaCopack,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-tortila",
-          name: "weigherTortila",
-          component: WeigherTortila,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-fcp",
-          name: "weigherFCP",
-          component: WeigherFCP,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-tws56",
-          name: "weigherTWS56",
-          component: WeigherTWS56,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-tws72",
-          name: "weigherTWS72",
-          component: WeigherTWS72,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/weigher-packing-pouch",
-          name: "weigherPackingPouch",
-          component: WeigherPackingPouch,
-          meta: { requiresUser: true },
-        },
-
-        // Packing routes - BagMaker (User only)
-        {
-          path: "packing/bagmaker-pc14",
-          name: "bagmakerPC14",
-          component: BagMakerPC14,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-pc39",
-          name: "bagmakerPC39",
-          component: BagMakerPC39,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-cassava-inhouse",
-          name: "bagmakerCassavaInhouse",
-          component: BagMakerCassavaInhouse,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-cassava-copack",
-          name: "bagmakerCassavaCopack",
-          component: BagMakerCassavaCopack,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-tortila",
-          name: "bagmakerTortila",
-          component: BagMakerTortila,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-fcp",
-          name: "bagmakerFCP",
-          component: BagMakerFCP,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-tws56",
-          name: "bagmakerTWS56",
-          component: BagMakerTWS56,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-tws72",
-          name: "bagmakerTWS72",
-          component: BagMakerTWS72,
-          meta: { requiresUser: true },
-        },
-        {
-          path: "packing/bagmaker-packing-pouch",
-          name: "bagmakerPackingPouch",
-          component: BagMakerPackingPouch,
           meta: { requiresUser: true },
         },
 

@@ -75,7 +75,7 @@ async function loadShiftReports() {
   errorShift.value = null;
   try {
     const response = await fetch(
-      `http://localhost:2000/api/daily-report/bagmaker/${lineId}?date=${selectedDate.value}`
+      `http://localhost:3001/api/daily-report/bagmaker/${lineId}?date=${selectedDate.value}`
     );
 
     if (!response.ok) {
@@ -105,7 +105,7 @@ async function loadHourlyReports() {
 
   try {
     const response = await fetch(
-      `http://localhost:2000/api/daily-report/bagmaker/${lineId}?date=${selectedDate.value}`
+      `http://localhost:3001/api/daily-report/bagmaker/${lineId}?date=${selectedDate.value}`
     );
 
     if (!response.ok) {
@@ -466,7 +466,8 @@ onUnmounted(() => {
 .report-container {
   max-width: 1200px;
   margin: 0 auto;
-  background: #1e293b; border: 1px solid #334155;
+  background: #1e293b;
+  border: 1px solid #334155;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
   overflow: hidden;
@@ -575,7 +576,8 @@ onUnmounted(() => {
 }
 
 .download-button:hover {
-  background: #1e293b; border: 1px solid #334155;
+  background: #1e293b;
+  border: 1px solid #334155;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
@@ -593,7 +595,8 @@ onUnmounted(() => {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #1e293b; border: 1px solid #334155;
+  background: #1e293b;
+  border: 1px solid #334155;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -619,7 +622,8 @@ onUnmounted(() => {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: #1e293b; border: 1px solid #334155;
+  background: #1e293b;
+  border: 1px solid #334155;
   border: none;
   color: #374151;
   font-weight: 500;
@@ -845,4 +849,3 @@ onUnmounted(() => {
   }
 }
 </style>
-

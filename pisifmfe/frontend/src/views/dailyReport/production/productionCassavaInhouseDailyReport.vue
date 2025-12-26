@@ -75,7 +75,7 @@ async function loadShiftReports() {
   errorShift.value = null;
   try {
     const response = await fetch(
-      `http://localhost:2000/api/daily-report/production/${lineId}?date=${selectedDate.value}`
+      `http://localhost:3001/api/daily-report/production/${lineId}?date=${selectedDate.value}`
     );
 
     if (!response.ok) {
@@ -105,7 +105,7 @@ async function loadHourlyReports() {
 
   try {
     const response = await fetch(
-      `http://localhost:2000/api/daily-report/production/${lineId}?date=${selectedDate.value}`
+      `http://localhost:3001/api/daily-report/production/${lineId}?date=${selectedDate.value}`
     );
 
     if (!response.ok) {

@@ -10,9 +10,9 @@ import lvmdp1DailyReportController from "./lvmdp/LVMDP_1/lvmdp_1.dailyReport.con
 import lvmdp2DailyReportController from "./lvmdp/LVMDP_2/lvmdp_2.dailyReport.controller";
 import lvmdp3DailyReportController from "./lvmdp/LVMDP_3/lvmdp_3.dailyReport.controller";
 import lvmdp4DailyReportController from "./lvmdp/LVMDP_4/lvmdp_4.dailyReport.controller";
-import productionController from "./production/production.controller";
-import packingController from "./packing/packing.controller";
 import dailyReportRouter from "./routes/dailyReport.router";
+import hourlyReportRouter from "./routes/hourlyReport.router";
+import electricalReportRouter from "./routes/electricalReport.router";
 import "./utils/pgTimezoneFix";
 
 const app = express();
@@ -49,43 +49,19 @@ app.get("/api", (_req, res) => {
   res.send("Sukses landing ke endpoint api");
 });
 
+// Dynamic LVMDP routes (frontend uses: /api/lvmdp/{panelId}/latest, /api/lvmdp/{panelId}/hmi, etc)
 app.use("/api/lvmdp", require("./routes/lvmdp.router").default);
 
+// User authentication
 app.use("/api/user", userController);
-app.use("/api/lvmdp1", lvmdp1Controller);
-app.use("/api/lvmdp1/daily-report", lvmdp1DailyReportController);
-app.use("/api/lvmdp2", lvmdp2Controller);
-app.use("/api/lvmdp2/daily-report", lvmdp2DailyReportController);
-app.use("/api/lvmdp3", lvmdp3Controller);
-app.use("/api/lvmdp3/daily-report", lvmdp3DailyReportController);
-app.use("/api/lvmdp4", lvmdp4Controller);
-app.use("/api/lvmdp4/daily-report", lvmdp4DailyReportController);
-
-// Production & Packing routes
-app.use("/api/production", productionController);
-app.use("/api/packing", packingController);
-
-// Utility Consumption routes
-import utilityController from "./utility/utility.controller";
-app.use("/api/utility", utilityController);
 
 // Daily Report routes
 app.use("/api/daily-report", dailyReportRouter);
 
 // Hourly Report routes
-import hourlyReportRouter from "./routes/hourlyReport.router";
 app.use("/api/hourly-report", hourlyReportRouter);
 
-// Summary routes
-import summaryRouter from "./routes/summary.router";
-app.use("/api/summary", summaryRouter);
-
-// Electrical Report routes (Professional reporting system)
-import electricalReportRouter from "./routes/electricalReport.router";
+// Electrical Report routes
 app.use("/api/report", electricalReportRouter);
-
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
 
 export default app;

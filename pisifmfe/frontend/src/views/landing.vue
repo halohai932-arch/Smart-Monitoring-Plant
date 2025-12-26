@@ -30,8 +30,8 @@ function submitLogin() {
   errorMsg.value = "";
 
   if (login(username.value, password.value)) {
-    // Redirect to summary dashboard
-    window.location.href = "/app/summary";
+    // Redirect to global dashboard
+    router.push("/app/global");
   } else {
     errorMsg.value = "Username atau password salah!";
     password.value = "";

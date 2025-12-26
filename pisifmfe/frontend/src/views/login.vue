@@ -77,7 +77,7 @@ function handleLogin() {
   error.value = "";
 
   if (login(username.value, password.value)) {
-    router.push("/app/summary");
+    router.push("/app/global");
   } else {
     error.value = "Username atau password salah";
     password.value = "";
